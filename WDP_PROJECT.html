@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RBIMS Portal – Events, Traditions &amp; Campus Life</title>
+  <meta name="description"
+    content="R B Institute of Management &amp; Computer Studies: fests, traditional days, programs, recruitment and contact." />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: "#f7f9fb", outline: "#75777f", "outline-variant": "#c5c6cf", primary: "#031636", "primary-container": "#1a2b4c", "primary-fixed": "#d8e2ff", "inverse-primary": "#b6c6f0", "on-primary-container": "#8293ba",
+            secondary: "#735c00", "secondary-fixed": "#ffe088", "secondary-container": "#fed65b", "festive-orange": "#FF6B35", "on-surface": "#191c1e", "on-surface-variant": "#44474e",
+            "surface-low": "#f2f4f6", surface: "#eceef0", "surface-high": "#e6e8ea", error: "#ba1a1a"
+          }, fontFamily: { sans: ["Plus Jakarta Sans", "sans-serif"] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif
+    }
+
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      display: inline-block;
+      white-space: nowrap;
+      direction: ltr;
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+      user-select: none
+    }
+
+    button,
+    a {
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer
+    }
+
+    section[id] {
+      scroll-margin-top: 68px
+    }
+
+    .rv {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .6s ease, transform .6s ease
+    }
+
+    .rv.in {
+      opacity: 1;
+      transform: none
+    }
+
+    .field-error {
+      border-color: #ba1a1a !important
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid rgba(197, 198, 207, .6);
+      border-radius: .75rem;
+      box-shadow: 0 1px 2px rgba(3, 22, 54, .06);
+      transition: box-shadow .2s, transform .2s
+    }
+
+    .card:hover {
+      box-shadow: 0 10px 24px rgba(3, 22, 54, .12);
+      transform: translateY(-2px)
+    }
+
+    .inp {
+      width: 100%;
+      background: #f2f4f6;
+      border: 1px solid #c5c6cf;
+      border-radius: .5rem;
+      padding: .65rem .9rem;
+      font-size: .9rem
+    }
+
+    .inp:focus {
+      outline: none;
+      border-color: #031636;
+      box-shadow: 0 0 0 2px #d8e2ff
+    }
+
+    .chip {
+      padding: .5rem 1rem;
+      border-radius: 9999px;
+      font-size: .85rem;
+      font-weight: 500;
+      background: #e6e8ea;
+      transition: all .2s
+    }
+
+    .chip:hover {
+      background: #e0e3e5
+    }
+
+    .chip[aria-pressed=true] {
+      background: #031636;
+      color: #fff
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      border-radius: .5rem;
+      padding: .6rem 1.1rem;
+      font-size: .875rem;
+      font-weight: 600;
+      transition: all .2s
+    }
+
+    .btn-p {
+      background: #031636;
+      color: #fff
+    }
+
+    .btn-p:hover {
+      background: #1a2b4c
+    }
+
+    .btn-o {
+      background: #FF6B35;
+      color: #fff
+    }
+
+    .btn-o:hover {
+      filter: brightness(1.08)
+    }
+
+    .btn-l {
+      border: 1px solid #c5c6cf;
+      color: #031636;
+      background: #fff
+    }
+
+    .btn-l:hover {
+      background: #f2f4f6
+    }
+
+    .nav-link {
+      padding: .35rem 0;
+      border-bottom: 2px solid transparent;
+      color: #44474e;
+      font-size: .875rem;
+      font-weight: 500;
+      transition: color .2s
+    }
+
+    .nav-link:hover {
+      color: #191c1e
+    }
+
+    .nav-link.on {
+      color: #031636;
+      font-weight: 700;
+      border-color: #031636
+    }
+
+    #toast {
+      transition: transform .25s, opacity .25s
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      html {
+        scroll-behavior: auto
+      }
+
+      .rv {
+        opacity: 1;
+        transform: none;
+        transition: none
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-background text-on-surface antialiased">
+  <a href="#events" class="sr-only focus:not-sr-only focus:fixed focus:z-[80] focus:bg-white focus:p-3">Skip to
+    content</a>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur shadow-sm">
+    <div class="flex justify-between items-center max-w-7xl mx-auto px-4 sm:px-6 py-3 gap-3">
+      <div class="flex items-center gap-2">
+        <button id="menuBtn" aria-label="Menu" aria-expanded="false"
+          class="lg:hidden p-2 -ml-2 rounded-full hover:bg-surface"><span
+            class="material-symbols-outlined">menu</span></button>
+        <a href="#home" class="text-xl font-bold text-primary flex items-center gap-2"><span
+            class="bg-primary text-white p-1.5 rounded-lg flex"><span
+              class="material-symbols-outlined text-xl">school</span></span>RBIMS Portal</a>
+      </div>
+      <nav id="deskNav" class="hidden lg:flex items-center gap-6"></nav>
+      <div class="flex items-center gap-1 sm:gap-2">
+        <button id="searchBtn" aria-label="Search"
+          class="p-2 rounded-full hover:bg-surface text-on-surface-variant"><span
+            class="material-symbols-outlined">search</span></button>
+        <div class="relative">
+          <button id="notifBtn" aria-label="Notifications" aria-expanded="false"
+            class="relative p-2 rounded-full hover:bg-surface text-on-surface-variant"><span
+              class="material-symbols-outlined">notifications</span><span id="notifDot"
+              class="absolute top-1.5 right-1.5 w-2 h-2 bg-festive-orange rounded-full"></span></button>
+          <div id="notifMenu"
+            class="hidden absolute right-0 top-full mt-2 w-72 max-w-[85vw] bg-white rounded-xl shadow-lg border border-outline-variant/50 overflow-hidden">
+            <div class="flex justify-between items-center px-4 py-3 border-b"><b
+                class="text-sm text-primary">Notifications</b><button id="markRead"
+                class="text-xs text-festive-orange font-semibold hover:underline">Mark all read</button></div>
+            <ul class="divide-y text-sm">
+              <li class="px-4 py-3">Fresher’s Fiesta passes are open.</li>
+              <li class="px-4 py-3">Committee applications are open.</li>
+              <li class="px-4 py-3">Agrim Tech Fest: limited slots left.</li>
+            </ul>
+          </div>
+        </div>
+        <button id="regBtn" class="btn btn-o shadow-sm">Register</button>
+        <button id="meBtn" aria-label="My registrations"
+          class="w-9 h-9 rounded-full overflow-hidden border border-outline-variant bg-primary-fixed hidden sm:block"><img
+            alt="Profile" class="w-full h-full object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaPHZKfICMBSJG2CyBAOZ31GItvokNbv2FGyQILe3i8TuJZsbftgd06GHLRNmow-tTEmXkLFXxEN4kwCqAvundYdpjPr4ZwkYp33Pr9m-dhhnYp4IbvUR8bUXut6fgopMWbQCixUFS2r_Wffr948CcW_5sPGTdalUU9SzQ0Yqort_5-HE45m2RndI2eRknDLGYStz2oayDLL5jc2SSq-HLA7XsdSOWB8dwJS8mtkQp-WF10e_bOuX_" /></button>
+      </div>
+    </div>
+    <nav id="mobNav" class="hidden lg:hidden border-t bg-white px-4 py-2 flex flex-col"></nav>
+    <div id="prog" class="absolute bottom-0 left-0 h-0.5 bg-festive-orange" style="width:0"></div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="relative overflow-hidden bg-primary text-white py-16 lg:py-24">
+      <div class="absolute inset-0 opacity-20 bg-cover bg-center"
+        style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCORDM6MHKsdllJ03emafmSK37F9n9Jqde5G57buBnhauZqoVsYWnrL-3g01nJGnhtd5x-Oh8jwfRzJ-HnGSu7TjAfA0jxL-1ScVr3H1W7QXG7P08Ynuv6JcMnltNEdY20kYyHJ5Gcx5ncED6YtkjgngncE5qexOx8txYVFhnGM6hr38iiw5ud8MJvesrjjbpMrUk7vHlcCG8qGkQ1uXMI8mXcIu15bIwc4eT5CF-shFsbyjyhVFWPg')">
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent"></div>
+      <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 space-y-4">
+          <span
+            class="inline-flex items-center gap-2 bg-festive-orange px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider"><span
+              class="material-symbols-outlined text-sm">bolt</span>Annual Fest 2026 Live</span>
+          <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight leading-tight">NEW FACES. NEW VIBES. <span
+              class="text-secondary-fixed">ONE FIESTA!</span></h1>
+          <p class="text-inverse-primary max-w-xl text-lg">Welcome to the official RBIMS Portal. Experience the pinnacle
+            of management excellence, technical prowess, and cultural vibrancy at our upcoming flagship events.</p>
+          <div class="flex flex-wrap gap-3 pt-3">
+            <button data-reg="fresher"
+              class="btn bg-secondary-container text-secondary hover:bg-secondary hover:text-white shadow-md px-6 py-3"><span
+                class="material-symbols-outlined">confirmation_number</span>Grab Passes Now</button>
+            <a href="#schedule" class="btn border border-outline-variant text-white hover:bg-white/10 px-6 py-3">Explore
+              Schedule</a>
+          </div>
+        </div>
+        <div id="heroCards" class="lg:col-span-5 grid grid-cols-2 gap-4"></div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 -mt-8 relative z-20">
+      <div id="stats"
+        class="bg-white rounded-xl shadow-lg border border-outline-variant grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x p-4">
+      </div>
+    </section>
+
+    <!-- Featured -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+      <div class="flex flex-col md:flex-row justify-between md:items-end gap-4 mb-10">
+        <div><span class="text-xs font-bold text-festive-orange uppercase tracking-wider">Upcoming Fests</span>
+          <h2 class="text-3xl font-bold mt-1">Featured Campus Experiences</h2>
+        </div>
+        <div id="featChips" class="flex gap-2"></div>
+      </div>
+      <div id="featGrid" class="grid lg:grid-cols-2 gap-8"></div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="bg-surface-low py-16 border-y border-outline-variant/60">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="text-center max-w-xl mx-auto mb-10"><span
+            class="text-xs font-bold text-festive-orange uppercase">Testimonials</span>
+          <h2 class="text-3xl font-bold mt-1">What Students Say About RBIMS Fests</h2>
+        </div>
+        <div id="testi" class="grid md:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+
+    <!-- EVENTS -->
+    <section id="events" class="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <h2 class="text-3xl font-bold">Campus Events &amp; Festivals</h2>
+          <p class="text-on-surface-variant">Filter through our high-energy academic and cultural calendar.</p>
+        </div>
+        <div id="chips" class="flex flex-wrap gap-2" role="group" aria-label="Event categories"></div>
+      </div>
+      <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+      <p id="none" class="hidden text-center py-12 text-on-surface-variant">No events match your search. Try another
+        word or choose “All Events”.</p>
+    </section>
+
+    <!-- CTA band -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+      <div class="relative overflow-hidden rounded-2xl bg-primary text-white">
+        <img alt="" class="absolute inset-0 w-full h-full object-cover opacity-25"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf1qEwXaJkaTYStcBT8A840uvu44x96Bo0A1xJJAh8oaw5Z3nfx1yqRCmR1a814acN4YEw7SMGkd2dn0iY0r6rPAyqbMIqqTu1306wggG0zkxyGCyxhzzXIftrHa0sTiR39PwtoX0lOxpzi3e1ieab14wvXjQtlubwPm42Z2dz66qUZD_fMphzJCVbnb3aarYZStiPcLi-nV-dGaE-RTIOEmj3XT0lhUMcGgnzOa-LRZWUSwvXRU5P" />
+        <div
+          class="relative p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+          <div class="max-w-xl"><span
+              class="inline-flex items-center gap-2 bg-primary-container text-inverse-primary px-3 py-1 rounded-full text-xs mb-3"><span
+                class="material-symbols-outlined text-sm">celebration</span>Annual Fest &amp; Recruitment Portal
+              2026</span>
+            <h2 class="text-3xl font-bold mb-2">Get Ready to Groove &amp; Lead at <span
+                class="text-festive-orange">RBIMS!</span></h2>
+            <p class="text-white/90">Explore our power-packed calendar of cultural fests, management symposiums, and
+              join prestigious student committees to shape your leadership journey.</p>
+          </div>
+          <div class="flex flex-wrap gap-3 justify-center"><a href="#events" class="btn btn-o px-6 py-3">Explore Events
+              Calendar</a><a href="#recruitment" class="btn bg-white text-primary hover:bg-primary-fixed px-6 py-3">Join
+              Committees</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCHEDULE -->
+    <section id="schedule" class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <h2 class="text-3xl font-bold mb-1">Schedule</h2>
+      <p class="text-on-surface-variant mb-6">Every fest and traditional day in date order.</p>
+      <ol id="sched" class="grid md:grid-cols-2 gap-3"></ol>
+    </section>
+
+    <!-- VENUES -->
+    <section id="venues" class="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <h2 class="text-3xl font-bold mb-1">Venues</h2>
+      <p class="text-on-surface-variant mb-6">Tap a venue to see what is happening there.</p>
+      <div id="venueGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="relative bg-primary text-white py-14 px-4 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-cover bg-center"
+        style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdfKVZ8SEcYZSct9jrMs1FawpyJtITZNpA2xzUQScpJES7uOGehZTmdbQXg0saF2jnN2l0wXDAebJnmrI6YbqNjFUb5a82w7G4SgIhwp2I4WA6n3ISAEvV-T7Ber76IDw_HkUvCFIFtF6P-vkyiH_0aWd4BMfsrP3hMjTfVMLsNW8ioVFcE6wDUcPyPJesa1PQK2LXNLN_wk94kRxGAnnt16ZPoBHC0AN-LD2wfJSBNJtfoc3RRUHW')">
+      </div>
+      <div class="relative max-w-7xl mx-auto text-center flex flex-col items-center">
+        <span
+          class="bg-secondary text-white text-xs px-3 py-1 rounded-full mb-3 uppercase tracking-wider font-bold">About
+          Our Institution</span>
+        <h2 class="text-4xl font-bold mb-3">Empowering Minds, Building Futures.</h2>
+        <p class="text-inverse-primary max-w-2xl text-lg">R B Institute of Management &amp; Computer Studies (RBIMS)
+          blends corporate academic prestige with dynamic student leadership to shape visionary leaders.</p>
+      </div>
+    </section>
+    <section class="py-14 px-4 sm:px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+      <div class="rv">
+        <h3 class="text-2xl font-bold text-primary mb-4">Welcome to RBIMS</h3>
+        <p class="text-on-surface-variant mb-6 text-lg">Established with a vision to foster holistic growth, RBIMS
+          delivers cutting-edge management and computer applications education. We stand as a beacon of academic rigor,
+          ensuring every student develops critical thinking, technical prowess, and uncompromising integrity.</p>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="card p-4"><b class="text-2xl text-festive-orange">25+</b>
+            <p class="text-xs text-on-surface-variant">Years of Excellence</p>
+          </div>
+          <div class="card p-4"><b class="text-2xl text-festive-orange">10k+</b>
+            <p class="text-xs text-on-surface-variant">Successful Alumni</p>
+          </div>
+        </div>
+      </div>
+      <img alt="RBIMS campus" loading="lazy" class="rv rounded-xl shadow-lg w-full h-80 object-cover"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlI0PIEZXwWLW6pcpzqPkEpLxuog9DEYHSLG-Oyy41WxK1jeUPs3glOpnitWaxTdLHtvb1CDDFFLVmInnbeRkyivstZDSpBz6mRUkrD-S7s_GpPPIvrmovbV4uu1nwAQpeTZwjvLxDRkiRSpwB_aGUn8VMcZVMKIQp9ZId3-4f0D0KLgz_6i9jqIcDb_vlq9soIjnM8cv_8Q3vDzOA6TOVHxTqTUbcddLvOEfg2hLvoYJTryRO4MVG" />
+    </section>
+    <section class="bg-surface-low py-14 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-6">
+        <div class="card p-8 rv">
+          <div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary mb-4"><span
+              class="material-symbols-outlined">visibility</span></div>
+          <h3 class="text-xl font-semibold text-primary mb-2">Our Vision</h3>
+          <p class="text-on-surface-variant">To be a premier institution recognized globally for developing agile,
+            ethical, and forward-thinking management and IT professionals who drive positive societal transformation.
+          </p>
+        </div>
+        <div class="card p-8 rv">
+          <div class="w-12 h-12 rounded-lg bg-primary-fixed flex items-center justify-center text-primary mb-4"><span
+              class="material-symbols-outlined">flag</span></div>
+          <h3 class="text-xl font-semibold text-primary mb-2">Our Mission</h3>
+          <p class="text-on-surface-variant">To impart quality education through experiential learning, industry
+            immersion, and multidisciplinary research, nurturing talents to lead with vision and character.</p>
+        </div>
+      </div>
+    </section>
+    <section class="py-14 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div class="text-center mb-10">
+        <h3 class="text-3xl font-bold text-primary mb-2">Our Flagship Programs</h3>
+        <p class="text-on-surface-variant max-w-xl mx-auto">Diverse academic pathways designed to build logic, inspire
+          change, and master the digital world.</p>
+      </div>
+      <div id="programs" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+    <section class="bg-surface-low py-14 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-10">
+          <h3 class="text-3xl font-bold text-primary mb-2">Leadership &amp; Faculty</h3>
+          <p class="text-on-surface-variant">Guiding lights dedicated to mentoring the leaders of tomorrow.</p>
+        </div>
+        <div id="faculty" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      </div>
+    </section>
+    <section class="py-14 px-4 sm:px-6 max-w-7xl mx-auto">
+      <div class="text-center mb-10">
+        <h3 class="text-3xl font-bold text-primary mb-2">Student Council Committee</h3>
+        <p class="text-on-surface-variant">The energetic student leaders driving campus festivals and events.</p>
+      </div>
+      <div id="council" class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center"></div>
+    </section>
+    <section class="bg-primary-container text-on-primary-container py-14 px-4 sm:px-6">
+      <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+        <div><span
+            class="bg-festive-orange text-white text-xs px-3 py-1 rounded-full mb-3 inline-block font-bold">World-Class
+            Facilities</span>
+          <h3 class="text-3xl font-bold text-white mb-4">State-of-the-Art Infrastructure</h3>
+          <p class="text-primary-fixed mb-4 text-lg">Our campus features air-conditioned smart classrooms, advanced
+            computer labs equipped with high-speed internet, a fully stocked resource library, and dedicated spaces for
+            cultural and sports events.</p>
+          <ul class="space-y-2 text-primary-fixed">
+            <li class="flex items-center gap-2"><span
+                class="material-symbols-outlined text-festive-orange">check_circle</span>Wi-Fi Enabled Smart Campus</li>
+            <li class="flex items-center gap-2"><span
+                class="material-symbols-outlined text-festive-orange">check_circle</span>Modern Auditorium &amp; Seminar
+              Halls</li>
+            <li class="flex items-center gap-2"><span
+                class="material-symbols-outlined text-festive-orange">check_circle</span>Dedicated Indoor &amp; Outdoor
+              Sports Arenas</li>
+          </ul>
+        </div>
+        <img alt="Computer lab" loading="lazy" class="rounded-xl shadow-lg w-full h-80 object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKbwFZahWCBKpa6SCcpU2-PglEfiTHGE7BN0M3HBIy5HOc5yZfoQ36sJW-5XaespjvW5F6UbTrqE8jntsB_kcoI8lvv6hsCiC5DfnnOm2A8slPj_IlWAdcr7IYIhJy9g6Cm2pFm8OT4fGiBhYBLis-MoGRmnnLcquayjqAyOgSCFFZwVSoinE6IlUjY6cAHgB2VfDAo6ww6muxvydL19D8ck8PkyjkXiddB4wBQaHoZxNZz10sShi6" />
+      </div>
+    </section>
+
+    <!-- RECRUITMENT -->
+    <section id="recruitment" class="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+      <div class="bg-surface-low rounded-2xl p-6 md:p-10 border border-outline-variant/40 shadow-sm">
+        <div class="text-center max-w-3xl mx-auto mb-10"><span
+            class="bg-primary-container text-inverse-primary px-3 py-1 rounded-full text-xs">Student Leadership
+            Opportunities</span>
+          <h2 class="text-3xl md:text-4xl font-bold mt-2 mb-3">Student Recruitment &amp; Committee Membership</h2>
+          <p class="text-on-surface-variant text-lg">Step up as a Volunteer, Coordinator, Tech Lead, or Cultural Head.
+            Build leadership competencies while organizing iconic college events.</p>
+        </div>
+        <div class="grid lg:grid-cols-3 gap-6 mb-10">
+          <div class="card p-6">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4"><span
+                class="material-symbols-outlined text-2xl">group</span></div>
+            <h3 class="text-lg font-semibold mb-2">Committee Roles</h3>
+            <ul class="space-y-2 text-sm text-on-surface-variant"
+              data-ticks='["Event Logistics &amp; Operations","Tech Leads &amp; App Developers","Cultural Heads &amp; Choreographers","Sponsorship &amp; Public Relations"]'>
+            </ul>
+          </div>
+          <div class="card p-6">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4"><span
+                class="material-symbols-outlined text-2xl">verified</span></div>
+            <h3 class="text-lg font-semibold mb-2">Eligibility Criteria</h3>
+            <ul class="space-y-2 text-sm text-on-surface-variant"
+              data-ticks='["Enrolled in RBIMS UG/PG Programs","Minimum 75% attendance record","Strong communication &amp; teamwork skills","Passion for extracurricular management"]'>
+            </ul>
+          </div>
+          <div class="card p-6">
+            <div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4"><span
+                class="material-symbols-outlined text-2xl">schedule</span></div>
+            <h3 class="text-lg font-semibold mb-2">Important Deadlines</h3>
+            <ul class="space-y-2 text-sm text-on-surface-variant">
+              <li class="flex justify-between"><span>Applications Open:</span><b class="text-on-surface">1st Feb
+                  2026</b></li>
+              <li class="flex justify-between"><span>Submission Close:</span><b class="text-error">20th Feb 2026</b>
+              </li>
+              <li class="flex justify-between"><span>Interview Rounds:</span><b class="text-on-surface">22nd-25th
+                  Feb</b></li>
+              <li class="flex justify-between"><span>Final Announcement:</span><b class="text-secondary">28th Feb
+                  2026</b></li>
+            </ul>
+          </div>
+        </div>
+        <div id="register" class="bg-white rounded-xl p-6 md:p-10 border border-outline-variant/40 shadow-sm">
+          <h3 class="text-2xl font-semibold mb-6 text-center">Committee Membership Application Form</h3>
+          <form id="appForm" novalidate class="grid md:grid-cols-2 gap-5">
+            <div><label class="block text-sm font-medium mb-2" for="aName">Full Name</label><input id="aName"
+                name="name" class="inp" placeholder="Enter your full name" />
+              <p class="err text-xs text-error mt-1 hidden"></p>
+            </div>
+            <div><label class="block text-sm font-medium mb-2" for="aId">Student ID / Enrollment Number</label><input
+                id="aId" name="sid" class="inp" placeholder="e.g., RBIMS2026045" />
+              <p class="err text-xs text-error mt-1 hidden"></p>
+            </div>
+            <div><label class="block text-sm font-medium mb-2" for="aProg">Academic Program &amp; Year</label><select
+                id="aProg" name="prog" class="inp">
+                <option>MBA - Year 1</option>
+                <option>MBA - Year 2</option>
+                <option>PGDM - Year 1</option>
+                <option>PGDM - Year 2</option>
+                <option>BBA - Final Year</option>
+              </select></div>
+            <div><label class="block text-sm font-medium mb-2" for="aRole">Preferred Committee Role</label><select
+                id="aRole" name="role" class="inp">
+                <option>Volunteer</option>
+                <option>Event Coordinator</option>
+                <option>Tech Lead / Developer</option>
+                <option>Cultural Head / Performer</option>
+              </select></div>
+            <div class="md:col-span-2"><label class="block text-sm font-medium mb-2" for="aWhy">Why do you want to join
+                this committee?</label><textarea id="aWhy" name="why" rows="4" class="inp"
+                placeholder="Briefly describe your previous experience or motivation..."></textarea>
+              <p class="err text-xs text-error mt-1 hidden"></p>
+            </div>
+            <div class="md:col-span-2 flex justify-end"><button id="aBtn" class="btn btn-o px-8 py-3 shadow"
+                type="submit">Submit Application</button></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="relative bg-primary text-white py-14 px-4 overflow-hidden">
+      <div class="absolute inset-0 opacity-10 bg-cover bg-center"
+        style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMILpL5USQpJFuJeb8EOHpTbBbOe_Y_Pwi8pZwj_adIg7rV4hFdHIWO2qGcBCGpllo2YRL7pWzZPKaNzWui-bAEHR1lmTJ9JJpTLNe4XuuE_naJST-MZDQ-i2Z83pdalZOjxH4mqnR_fKyQ1XzCD61W2G8LrFGUaQfaqjz1iCaMXL1x6ae4fLSMdOq9m7LCSP_EoZAbaabk0eU61v0o3J9yFGpPdv6xhm21i9Q0nr9H10pA14U_01i')">
+      </div>
+      <div class="relative max-w-7xl mx-auto text-center flex flex-col items-center"><span
+          class="bg-secondary text-white text-xs uppercase px-3 py-1 rounded-full mb-3 font-bold tracking-wider">Get In
+          Touch</span>
+        <h2 class="text-4xl font-bold mb-3">Connect With RBIMS Portal</h2>
+        <p class="text-inverse-primary max-w-2xl text-lg">Have questions about upcoming festivals, management
+          symposiums, or admissions? Reach out to our dedicated campus team.</p>
+      </div>
+    </section>
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid lg:grid-cols-12 gap-10">
+      <div class="lg:col-span-7 flex flex-col gap-10">
+        <div class="card hover:!transform-none p-6 md:p-10">
+          <h3 class="text-2xl font-semibold text-primary mb-2">Send Us a Message</h3>
+          <p class="text-sm text-on-surface-variant mb-6">Fill out the form below and our event committee will respond
+            within 24 hours.</p>
+          <form id="cForm" novalidate class="flex flex-col gap-4">
+            <div class="grid md:grid-cols-2 gap-4">
+              <div><label class="block text-sm font-semibold mb-1" for="cName">Your Full Name</label><input id="cName"
+                  name="name" class="inp" placeholder="John Doe" />
+                <p class="err text-xs text-error mt-1 hidden"></p>
+              </div>
+              <div><label class="block text-sm font-semibold mb-1" for="cEmail">Email Address</label><input id="cEmail"
+                  name="email" type="email" class="inp" placeholder="john@example.com" />
+                <p class="err text-xs text-error mt-1 hidden"></p>
+              </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-4">
+              <div><label class="block text-sm font-semibold mb-1" for="cPhone">Phone Number</label><input id="cPhone"
+                  name="phone" type="tel" class="inp" placeholder="+91 98765 43210" />
+                <p class="err text-xs text-error mt-1 hidden"></p>
+              </div>
+              <div><label class="block text-sm font-semibold mb-1" for="cType">Inquiry Type</label><select id="cType"
+                  class="inp">
+                  <option>Event Registration</option>
+                  <option>Cultural Fest Partnership</option>
+                  <option>Academic Schedule</option>
+                  <option>General Campus Inquiry</option>
+                </select></div>
+            </div>
+            <div><label class="block text-sm font-semibold mb-1" for="cMsg">Event Inquiry / Message</label><textarea
+                id="cMsg" name="message" rows="4" maxlength="500" class="inp"
+                placeholder="Write your message here..."></textarea>
+              <div class="flex justify-between">
+                <p class="err text-xs text-error mt-1 hidden"></p><span id="cnt" class="text-xs text-outline ml-auto">0
+                  / 500</span>
+              </div>
+            </div>
+            <button id="cBtn" class="btn btn-p py-3 mt-1" type="submit"><span
+                class="material-symbols-outlined">send</span><span>Submit Inquiry</span></button>
+          </form>
+        </div>
+        <div class="card hover:!transform-none p-6 md:p-10">
+          <h3 class="text-2xl font-semibold text-primary mb-5">Campus Contact Details</h3>
+          <div class="grid md:grid-cols-3 gap-4">
+            <a target="_blank" rel="noopener"
+              href="https://www.google.com/maps/search/?api=1&query=RBIMS+Hirawadi+BRTS+Thakkarbapanagar+Ahmedabad+382350"
+              class="flex gap-3 p-2 -m-2 rounded-lg hover:bg-surface-low"><span
+                class="material-symbols-outlined bg-primary-fixed text-primary p-3 rounded-full h-fit">location_on</span>
+              <div><b class="text-sm">Address</b>
+                <p class="text-xs text-on-surface-variant mt-1">Opp. Hirawadi BRTS, Thakkarbapanagar, Ahmedabad, 382350
+                </p>
+              </div>
+            </a>
+            <a href="tel:+919081855525" class="flex gap-3 p-2 -m-2 rounded-lg hover:bg-surface-low"><span
+                class="material-symbols-outlined bg-primary-fixed text-primary p-3 rounded-full h-fit">call</span>
+              <div><b class="text-sm">Phone</b>
+                <p class="text-xs text-on-surface-variant mt-1">+91 90818 55525</p>
+              </div>
+            </a>
+            <a href="mailto:rbreceptionrbims@gmail.com"
+              class="flex gap-3 p-2 -m-2 rounded-lg hover:bg-surface-low"><span
+                class="material-symbols-outlined bg-primary-fixed text-primary p-3 rounded-full h-fit">mail</span>
+              <div><b class="text-sm">Email</b>
+                <p class="text-xs text-on-surface-variant mt-1 break-all">rbreceptionrbims@gmail.com</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-5 flex flex-col gap-10">
+        <div class="card hover:!transform-none p-6 md:p-8">
+          <h3 class="text-xl font-semibold text-primary">Coordinator Directory</h3>
+          <p class="text-xs text-on-surface-variant mb-4">Reach out directly to our event leads for prompt assistance.
+          </p>
+          <div id="coords" class="flex flex-col gap-3"></div>
+        </div>
+        <div class="card hover:!transform-none p-4 flex flex-col gap-3">
+          <h3 class="text-xl font-semibold text-primary px-2 pt-2">Campus Location</h3>
+          <div class="h-64 rounded-lg overflow-hidden bg-surface relative"><iframe title="RBIMS campus map"
+              class="w-full h-full border-0" loading="lazy"
+              src="https://www.google.com/maps?q=RBIMS+Hirawadi+BRTS+Thakkarbapanagar+Ahmedabad&output=embed"></iframe>
+            <span
+              class="absolute bottom-3 left-3 bg-white px-3 py-2 rounded shadow-md flex items-center gap-2 text-xs font-bold pointer-events-none"><span
+                class="material-symbols-outlined text-festive-orange text-base">place</span>RBIMS, Ahmedabad</span>
+          </div>
+          <div class="flex gap-2"><a target="_blank" rel="noopener"
+              href="https://www.google.com/maps/dir/?api=1&destination=RBIMS+Hirawadi+BRTS+Thakkarbapanagar+Ahmedabad+382350"
+              class="btn btn-p flex-1"><span class="material-symbols-outlined text-base">directions</span>Get
+              directions</a><button id="copyAddr" class="btn btn-l flex-1"><span
+                class="material-symbols-outlined text-base">content_copy</span>Copy address</button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-primary text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 grid md:grid-cols-3 gap-6 items-center text-center md:text-left">
+      <div><b class="text-xl">RBIMS Portal</b>
+        <p class="text-primary-fixed text-xs mt-1">Empowering Minds. Building Futures.</p>
+        <p class="text-xs text-on-primary-container mt-2">Opp. Hirawadi BRTS, Thakkarbapa Nagar, Hirawadi, Ahmedabad,
+          Gujarat 382350</p>
+      </div>
+      <div class="flex flex-wrap justify-center gap-5 text-xs"><button data-info="privacy"
+          class="text-on-primary-container hover:text-secondary-fixed">Privacy Policy</button><button data-info="terms"
+          class="text-on-primary-container hover:text-secondary-fixed">Terms of Service</button><button
+          data-info="support" class="text-on-primary-container hover:text-secondary-fixed">Support</button><a
+          target="_blank" rel="noopener"
+          href="https://www.google.com/maps/search/?api=1&query=RBIMS+Hirawadi+BRTS+Ahmedabad"
+          class="text-on-primary-container hover:text-secondary-fixed">Campus Map</a></div>
+      <p class="text-xs text-on-primary-container md:text-right">© 2026 RBIMS Portal. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <button id="topBtn" aria-label="Back to top"
+    class="hidden fixed bottom-6 right-5 z-40 w-11 h-11 rounded-full bg-festive-orange text-white shadow-lg items-center justify-center hover:brightness-110"><span
+      class="material-symbols-outlined">arrow_upward</span></button>
+
+  <div id="modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/55" role="dialog"
+    aria-modal="true" aria-labelledby="mTitle">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[88vh] overflow-y-auto">
+      <div class="flex items-center justify-between px-6 py-4 border-b sticky top-0 bg-white z-10">
+        <h3 id="mTitle" class="text-lg font-semibold text-primary"></h3><button id="mClose" aria-label="Close"
+          class="p-1 rounded-full hover:bg-surface"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div id="mBody" class="px-6 py-5 text-sm text-on-surface-variant"></div>
+    </div>
+  </div>
+  <div id="toast" role="status"
+    class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-6 opacity-0 pointer-events-none z-[70] bg-primary text-white text-sm px-5 py-3 rounded-full shadow-lg flex items-center gap-2 max-w-[90vw]">
+    <span class="material-symbols-outlined text-base text-secondary-fixed">check_circle</span><span id="tt"></span>
+  </div>
+
+  <script>
+    const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    const esc = t => String(t).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const FB = '<div class="w-full h-full bg-gradient-to-br from-primary to-festive-orange"></div>';
+    const img = (u, c = '', a = '') => `<img loading="lazy" alt="${esc(a)}" class="${c}" src="${u}" onerror="this.onerror=null;this.outerHTML=FB"/>`;
+
+    /* ======== CONTENT (edit here) ======== */
+    const EVENTS = [
+      { id: 'garba', title: 'Thanganat Garba 2K26', cat: 'Cultural', tag: 'Cultural Fest', date: '2026-10-16', dt: '16th October 2026', venue: 'RBIMS Campus', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCM5lLiv0l3Wms2WtIwHUb5vprVEzkhWauBHXHV3uNDJKx6CpRfURad30lWMdC2OCiK_Pe-rotTZMm-986izDL1gG0O9aF_V7_2iGd1d5tD-TJ1u-QG8EH5LfSk2BbO1o25wstvsm-TBhjFQ2J9LAeOsZB5BKP4o0TuPEBrdRXCjH85DGUf8YKRY_SpUHCzDjm77d_ggXFvYYhpftRKtNuKYxzk1ZOt3VdHDwoLe4vEHR6vwKtC772p', big: 1, desc: 'Get ready for a night filled with Garba, Dandiya, music, colors, fun and unforgettable memories at RBIMS Campus!' },
+      { id: 'bollywood', title: 'Bollywood Day', cat: 'Cultural', tag: 'Celebrity Day', date: '2026-02-06', dt: '6th February 2026', venue: 'Auditorium', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCniajx_OBQzHHgqxwqWDa1lGKz07MJl6Ds6_u2_uzPtuXUymg9oPpqI1JN1bqn3ks6WaRnmlL-ELsLx-bkGPQuDwGOfWWyhCCe8McYwHTXmxmazNg5O0DFXq_DbLNjWpUUrSMFwug0I0j00_T80OkdtDIXliwNINGctwCZB5OqQAW7NyyS1vaLDOVlyk9X7rrwXdjLyE9mkYFpCpr68wSImHum_n_L5lJcBHkk15HnnrqE-X0jv8z5', desc: 'Dress up as your favorite Bollywood celebrity! 6th February 2026.' },
+      { id: 'traditional', title: 'Traditional Day', cat: 'Cultural', tag: 'Cultural', date: '2026-02-07', dt: '7th February 2026', venue: 'Main Ground', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAuDI7TPEk_rHhaU_wGzCmMeD7MfleW9-haMGgzYCTXQInvNothU7QiDGxDG5RJhgkqTewZWpad_F3LI6nfemc0ygxnfC0FVD6rTUGpKdzhKyM6pWHwWLY8NSJ6kuhG_RbacWt0x07G7Po2bDn_jZNR_XxdSUhtq_sGEuSsuhjENWCTkakZ6hRadcwjl0ij2W4Lzh8uBxQqi_gECl4goZ-NsyiLHlJK7_Qw7n94MwaMrDDU1Od-hkh8', desc: 'Dress in your traditional attire and celebrate our cultural heritage on 7th February 2026.' },
+      { id: 'school', title: 'Back To School Day', cat: 'Cultural', tag: 'Theme Day', date: '2026-02-06', dt: '6th February 2026', venue: 'Campus Quad', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCzcU5-INFtiY0TGuO-xB7Q-OCnJOTyTcczaEl2FRg2RRENJwKhf1RJtuX2Nx8M_pNZN99qPfsC3art9LP-11XEz7dh-hohz-TEzkU-fw8MFCPd1EK4g9ynMdRUoCwJ7SbcOORKH9KQjX4WTt6eZ3EWzEflSWXfCezzdnLtW9mNJ4EmW0pN-MfXnEjchy3C8sVdHg_T4zUMoIJ4tc3-nQ7lePQ0mrraG1nsEnVBdPgSfmPySZqoPz07', desc: 'Dress up as a school kid for a fun-filled nostalgic day on 6th February 2026.' },
+      { id: 'agrim', title: 'Agrim Tech Fest 2026', cat: 'Tech & Management', tag: 'Tech Fest', ftag: 'Technical Fest', f: 'Technical', date: '2026-02-27', dt: '27th Feb 2026', time: '10:00 AM Onwards', venue: 'Sahid Mangal Pandey Hall', host: 'Prof. Dr. Suresh', price: '₹100 Only', sup: 'R.B. Institute of Management Studies', sub: 'BGMI Tournament & Hackathons', status: 'Limited Slots Left', cta: 'Register Now', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDea6k6TY7201Y5W-paLXi_62IF4xpCFbfYkxlS75_HeiXGIKJqdp3LF-YOvNzVnwDXu4BqXkMDA1OeROSNQuAbx-OWkKyZL4H8OAxXglUoNJLY7zMNY4gzto2z94D-EeJ08c2fifYFcu5jkV5-XgZXvNhyw4eeFwvN6GetgxTtNmCLnWmmps_4RGVCpIy1PDqbM6mi6eg-tKkMAPNV2rx67l5ECTOQJpHwaPoCTaJ6ENusVnzPJnH2', fimg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBe9pPIPECjx-WqTySn_AjXhJW92k4q4keGzCG8smQ5oA3pM0UX-vUiaO8ayusc7zpRu7ookEF8OoT32gtUs4ivlCItnQoR8JjY9Z98kPe30bMKndbXGv-EcMGcak4BAyPvKlyTWsEAsrAAhrii_fg9qAGdqnkCuyQvqSWvg33ob0xHhZsTI7KPKJUo9V1fCqJKDKyZ29BGosKHu8URZDYlkpawqbKWNebnpFeKHe0Z-gRHkdBi-wE_', himg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAfRZXMuzHb2njQUDWmyxUEL0wtCHC-ZUKyz1ZqhS_FepcaLlPJy_wLpG7dScNFd5QWhYFAZJhZ9_bTOvH5o8w3grsfgpztsbulOypYPqdCybnycTS6oq_Ak2UlEW5_RDMDNZ4t1f9K_q3K73YODadZYbDJsaLKWj1cUlH0xvjoXeGK8BO10HnHrFg9JKfSe05kko8EgaNIF2ZsQg9Dbah9ar8PJ6Gex0HN7_fBkr8vynoXcikUjIzP', desc: 'Showcase your technical prowess, AI hackathons, and management case studies.', long: 'Gear up, drop in, survive to win! Show off your tactical supremacy in the headline BGMI Tournament and cutting-edge tech competitions.' },
+      { id: 'fresher', title: 'Fresher’s Fiesta', ft: 'Fresher’s Fiesta 2K26', cat: 'Cultural', tag: 'Management', ftag: 'Cultural Fest', f: 'Cultural', date: '2026-09-26', dt: '26/09/2026', time: '11:00 AM', venue: 'Main Auditorium', host: 'Manmeet & Om', price: '₹350 Only', sup: 'RBIMS Presents', sub: 'DJ Party & Ramp Walk', status: 'Registrations Open', cta: 'Book Passes', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAdYbBfEKlPprCjfZhOA1I7_RqTX7BPLgyKh5u1kDsuKWYT7dBY8P2DWRrEv7hoPwNob-_feWRkfVgfF8p9GggvXJkLc0iL7CyKS1ifGtE5D5w45T4Au5cm5BZyNEGP6mtwv5a2UMRebso45XIsEa-wajML8eZ-tMguoht4bPZ89NpcEt9F151pQFK7tslXKD7w4Y-KTxbaIhpwTvoQgT-PhmslmVuSbDAiYN8wRPJ5_oWdjGPMPKut', fimg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuARQiTbL0c9FNQkxGBUjge6Ns_SovY2l_x1SIGdJZzismi6dy8247yIFmwIv5_WkkL3bsyf2qViQUOPIxVm2nv4ksFFHe8Dbum-fmEyn5Os5xZYG28FSoWVSTTBwX83QBoXICYL-17TMGtCpa8Y3HwN2ZvUPVZXon7DbnN83VxIOQV67F0p5ISzTdhPiwiaC1tzXKul0XnREMlPujEw4CfzPJqldtFTFmEN3v-PRo23v9ZzbFLWEnVh', himg: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBL6CWJArDTWYSBfY31c9q1YJvSCcknh-WBqGYg4yDWCmBsv9VIkXlQ5AsVuBZd6WhlMS3LmbzgPa56EcDnhVwNBkMkRckiK3VlVVqjrMT8ITD4bNEEVw13pmGmlu0MUT-T8-3fregK4LDhKzvdTr1HCcA2EocVoLC3pGFbWFPDUgaxrj6T3G0WD9tcM02StLqkK4aVHM38bIQW45xsQ9ybULnvZfJl8rahHGPzNWtIP1gf9_N17a_', desc: 'A grand welcome event introducing new batch students to the RBIMS family culture.', long: 'A new beginning, endless possibilities! Join us for an unforgettable day featuring high-energy DJ Party, Ramp Walk showcase, gourmet food stalls, and endless networking.' },
+      { id: 'ganesh', title: 'Ganesh Mahotsav', cat: 'Cultural', tag: 'Spiritual', date: '', dt: 'Date to be announced', venue: 'Campus Temple Square', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD1fm1nqsMrlaJR-wtCbJ8ow-7D3_JNsOuC31km7oE7lZVhcTt1Yc1xGrpOv0E8cSwQJUp4MWTEH_Evap1tZCft1_9yLCz10lAoU-A0vL-Bv06TU6p2kS3eK_QebZjYcXvrEwFjeWYlkwbFzoGwW1iFvwbMS0kmLNdUiNSwPCDZrlM1E0GH2q2IKeoUrGoifqr06Ccq2BZxBEh5sSCmMSm9H_CciwXhBdq-n9YlqLPWybDDFD5DxMHG', desc: 'Devotional celebrations, cultural recitals, and community meals on campus.' }
+    ];
+    const STATS = [['15+', 'Flagship Events', 'text-primary'], ['₹2L+', 'Prize Pool', 'text-festive-orange'], ['2500+', 'Expected Footfall', 'text-primary'], ['50+', 'Participating Colleges', 'text-festive-orange']];
+    const TESTI = [['Agrim Tech Fest gave our gaming team an unbelievable platform to compete against top colleges in Gujarat. The organization was world-class!', 'Parth Gauswami', 'Student Co-ordinator', 'https://lh3.googleusercontent.com/aida-public/AB6AXuCEXCzqoxklidDSgi9SKstLbzeyZOwpcu75X_D2TheHtBeO9x0_BV3ZoehAaslR50LEhZotNzmglhBtC0So76V3LR9cxsWpXunZGmi6pFUmMWBT_KpmkA6x13d-fFtT7gYLQeSh9YQW_jky8HlMjXYaOCda2k6r3L0cBjsplzjwHYxwEBCNVK0b3AymBAZkgjhRnLJ_uvcZiZ0VZYTX5-hSAIhJU0c7I0h5E7hvnnY8lYf3WrrbZ1ZK'], ['Fresher’s Fiesta was the absolute highlight of my first year! The DJ night and ramp walk made me feel completely at home in the RBIMS family.', 'Manmeet Kaur', 'Event Organizer', 'https://lh3.googleusercontent.com/aida-public/AB6AXuAiRXv-cJhCqbxD3LYg8UAbhqY8qymHLIMGipZpqBjnPovndlRjnoDrezAWS4Vxi_Ah4toNBj_HfUsCDk9_p_fu4R4FszqrOiOKlWYeTYxm827bFKgAchr4J-YfBcAWZ9d5YLHiAP6j6nXPDtrHVX03BxCGvg1ekY5n7vuforPSK7hO61-seGdWD9AlMxMdsLqoz94ELwsmZjACKLwt9rfExch456G9zK1RS9IIkj_n2Int1boO6dY-'], ['RBIMS consistently balances rigorous management academics with high-energy cultural extravaganzas. Truly unmatched student life experience.', 'Om Gohil', 'Student Council President', 'https://cdn.pixabay.com/photo/2023/03/13/11/18/ai-generated-7849612_1280.jpg']];
+    const PROGRAMS = [['MBA', 'Management', 'Leads with vision. Creates impact.'], ['MCA', 'Computer Applications', 'Codes solutions. Powers the digital world.'], ['BBA', 'Undergraduate Management', 'Organizes ideas. Leads teams. Inspires change.'], ['BCA', 'Undergraduate IT', 'Builds logic. Designs the future.'], ['IMBA', 'Integrated Program', 'Global mindset. Limitless possibilities.'], ['B.Voc', 'Vocational Studies', 'Skills today. Success tomorrow.']];
+    const FACULTY = [['Dr. Ramesh Sharma', 'Director, RBIMS', 'With over 20 years in academic administration and corporate consulting.', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBWcwqYk0mIGCvhWd1Uw2h1nbYcAsOoEw_pEQG-Zp-t7l5UQ-B5bsUKRrnvyiBtcE2TGak8UlLNr8hQm-wzFBVeOlhAeTLXP5lEo9Qt8rydZKDBoaFJu01WHGNc5PmSgahVDtnQWxgiMx-KE4D8jH8WgDIG9bLxKDRKijUShUiK4yyKyhDohIDthGOPFNnNX5F64pZB0K2zssfC3xHWTFzYici2cD3rIibdkx3vJC8hco6K9KRwjVXX'], ['Prof. Anjali Mehta', 'Dean of Academics', 'Specializing in strategic management and student cultural initiatives.', 'https://lh3.googleusercontent.com/aida-public/AB6AXuDbMa-7vKZ0kQK-DytAee6hH4L6z9Z5V-K8i8pDMSvqy9QIiq4R0XT3Fl_Luv2B1ZiZjHnqUNw15Mmk2S262LxWRqGFkFx5X7OHtL7fcLeFNdXKCl_VDF47NFkOy-E8A2WB6dfHbcNSeDwECVdUypSpFpMfgq5ms3cwxh4IHTBclf3C2UYaznvFN9xxgY--aoVANTzA2uwo-mi6EqxMY7M8P5BabjAT3hbTzXkI0ya-yepiSlG6ASIy'], ['Dr. Rajesh Kumar', 'Head of Computer Studies', 'Expert in software engineering and emerging technological trends.', 'https://lh3.googleusercontent.com/aida-public/AB6AXuDIB5NJKzEwsDzPZKqKFVzNI98A-0mDpNbaeqwXD4S173zbinBimb_579kHhT_p2s12B4y3Ac8nSO09aU3dkSkMHgaTV6IHerssvH0Ub67lrEBkRxQuvCiRL-OAGYEerM53v-Lv3ykK67hkcmR1lo8ElAUDnoGQv4JX-FI-ceZ1r2CNOUl25gHuW3Q1zayfn6CcVtwCZGeYCzO7gPybE0koBHSIHuuw6Nz_1lLUXg4a0l4KheZX_eqF']];
+    const COUNCIL = [['Karan Shah', 'President', 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnfxCzs8_FwCMX5wLKKeAfO03gtRf9shHecujDG0bz0ngRfus6XIVAYDSlTQ6Ig1zeXMnL0R8azK4474a2P8wZYYG7wzlzdHw8hharqZstKWe1kWIKOoWcCB0LRHFP7uMEabZdmVQAnvc_C8fypzSObPq7-LwIpB_0GwKEgL2NUPvacZfZei_9bq0rCGsH73DeV8Wc4COj8Zg3Sbf6Il-TgHFE9iCeeFQ44rKPZu081KrxHQDtV-Al'], ['Priya Patel', 'Vice President', 'https://lh3.googleusercontent.com/aida-public/AB6AXuAFcw9Wra4fZ7aSi8TCyPPDZRD9RsrPqy2_QKBffUFAiE0YKP6wIRjdQw65wEYpl2K8pmnU7UdMbB7aNuzv0PU0BzQQ5D7qdg8MnYRdRLZXvVM8uqCSCiNgZFseeMlIiMl8kBnnrt0SvhDirEdMjGggBkWxatRkOmtkzNqvrJvUrfSPIhQEOSu0yj26CKu9N-XpEmzP3rl6xrDPhn7RQ9N8TX0HGK3mKZGuR3wlqTr0bIRfL7onTXsU'], ['Rohan Verma', 'Cultural Secretary', 'https://lh3.googleusercontent.com/aida-public/AB6AXuB1xyRP9i9LoVRzbWtBwzCyjXNvbs9MCkHutjAzJM_Fl5pjaLDmglUf77xpKCD9IxGLEWtT31dM0JMv8iG4CnyH3D1iFi6wzxtMYWW8O-QEB56UgcwUoTPHXxDD7ux1EU7X-YuXennEdjV-EyEwq9VzyH8Q8OpXY89RMpfcunLgpp1pi7EzCfSts_znCLgmJSLIN_J6CoJAD1TnJNhdPxO3YAOLL5Nx-glKsug23sCHGjlIj6XqpfxC'], ['Neha Desai', 'Treasurer', 'https://lh3.googleusercontent.com/aida-public/AB6AXuDQdTxXIlp_Fz2b5pLXjvsvfUg49g7PLkrBDzyM9uM2pXH4GX-HLMLTZIWeIhHgVn6ZkQ0IgplQ_mNAisqQ0hoU9jY0HzoE_X97eUKOh8TGU1CR_n7RGgxyge0sFKAadJzLkks32E3czPS11dC_lbRCk8zX-mdUCLhsRdKqmxiJwESJ5m1XjfAJpijCx0oXAT9opPbl29jA7WFRyyLH2d4z4j3bS3HNQpOKdVmiDT24vRUhLnF2Q-ky']];
+    const COORDS = [['DR', 'Dr. Rajesh Sharma', 'Faculty Convenor', 'bg-primary'], ['AP', 'Ananya Patel', 'Student President', 'bg-secondary'], ['MK', 'Manan Kumar', 'Fest Coordinator', 'bg-festive-orange']];
+    const PHONE = '+919081855525';
+    const INFO = { privacy: ['Privacy Policy', 'We use the details you submit only to answer your inquiry or process your registration and do not share them with third parties.'], terms: ['Terms of Service', 'Use this portal for campus events, admissions and recruitment inquiries only. Event details may change without notice.'], support: ['Support', 'Call +91 90818 55525 or email rbreceptionrbims@gmail.com. We reply within 24 hours.'] };
+    const NAV = [['home', 'Dashboard'], ['events', 'Events'], ['schedule', 'Schedule'], ['venues', 'Venues'], ['about', 'About'], ['recruitment', 'Recruitment'], ['contact', 'Contact']];
+
+    /* ======== helpers ======== */
+    const store = { get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)) } catch { } } };
+    let regs = store.get('rbims_regs', []), cat = 'All Events', q = '', feat = 'All Events';
+    const joined = id => regs.some(r => r.id === id), ev = id => EVENTS.find(e => e.id === id);
+    let tt; function toast(m) { $('#tt').textContent = m; const t = $('#toast'); t.classList.remove('opacity-0', 'translate-y-6'); clearTimeout(tt); tt = setTimeout(() => t.classList.add('opacity-0', 'translate-y-6'), 2800) }
+    let lastF; function openM(t, h) { lastF = document.activeElement; $('#mTitle').textContent = t; $('#mBody').innerHTML = h; $('#modal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; ($('#mBody input,#mBody select,#mBody button') || $('#mClose')).focus() }
+    function closeM() { $('#modal').classList.add('hidden'); document.body.style.overflow = ''; lastF && lastF.focus && lastF.focus() }
+    $('#mClose').onclick = closeM; $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeM() });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeM(); closeN() } });
+    async function copy(t, m) { try { await navigator.clipboard.writeText(t) } catch { const x = document.createElement('textarea'); x.value = t; document.body.appendChild(x); x.select(); document.execCommand('copy'); x.remove() } toast(m) }
+    const rules = { name: v => v.trim().length < 2 ? 'Enter your full name.' : '', email: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'Enter a valid email address.', phone: v => !v || /^[+\d][\d\s-]{7,14}$/.test(v.trim()) ? '' : 'Enter a valid phone number.', message: v => v.trim().length < 10 ? 'Write at least 10 characters.' : '', sid: v => v.trim().length < 4 ? 'Enter your enrollment number.' : '', why: v => v.trim().length < 10 ? 'Tell us a little more (10+ characters).' : '' };
+    function check(el) { const r = rules[el.name]; if (!r) return true; const m = r(el.value), p = el.parentElement.querySelector('.err'); el.classList.toggle('field-error', !!m); if (p) { p.textContent = m; p.classList.toggle('hidden', !m) } return !m }
+    const valid = f => $$('[name]', f).map(check).every(Boolean);
+    document.addEventListener('focusout', e => { if (e.target.matches && e.target.matches('input[name],textarea[name]')) check(e.target) });
+
+    /* ======== header ======== */
+    $('#deskNav').innerHTML = NAV.map(([id, l]) => `<a data-nav="${id}" href="#${id}" class="nav-link">${l}</a>`).join('');
+    $('#mobNav').innerHTML = NAV.map(([id, l]) => `<a href="#${id}" class="py-3 text-on-surface-variant border-b last:border-0">${l}</a>`).join('');
+    $('#menuBtn').onclick = () => { const m = $('#mobNav'); m.classList.toggle('hidden'); $('#menuBtn').setAttribute('aria-expanded', !m.classList.contains('hidden')) };
+    $$('#mobNav a').forEach(a => a.onclick = () => $('#mobNav').classList.add('hidden'));
+    function closeN() { $('#notifMenu').classList.add('hidden'); $('#notifBtn').setAttribute('aria-expanded', 'false') }
+    $('#notifBtn').onclick = e => { e.stopPropagation(); const m = $('#notifMenu'); m.classList.toggle('hidden'); $('#notifBtn').setAttribute('aria-expanded', !m.classList.contains('hidden')) };
+    $('#markRead').onclick = () => { $('#notifDot').classList.add('hidden'); closeN(); toast('All notifications marked as read') };
+    document.addEventListener('click', e => { if (!e.target.closest('#notifMenu,#notifBtn')) closeN() });
+    const spy = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) $$('.nav-link').forEach(l => l.classList.toggle('on', l.dataset.nav === en.target.id)) }), { rootMargin: '-40% 0px -55% 0px' });
+    $$('main section[id]').forEach(s => spy.observe(s));
+    addEventListener('scroll', () => { const h = document.documentElement, p = h.scrollTop / (h.scrollHeight - h.clientHeight); $('#prog').style.width = (p * 100) + '%'; $('#topBtn').classList.toggle('hidden', h.scrollTop < 600); $('#topBtn').classList.toggle('flex', h.scrollTop >= 600) }, { passive: true });
+    $('#topBtn').onclick = () => scrollTo({ top: 0, behavior: 'smooth' });
+
+    /* ======== search ======== */
+    $('#searchBtn').onclick = () => {
+      openM('Search', '<input id="sq" class="inp mb-3" placeholder="Search events, programs, venues..." autocomplete="off"/><div id="sr" class="flex flex-col gap-2 text-sm"></div>'); const run = () => {
+        const v = $('#sq').value.trim().toLowerCase(); if (!v) { $('#sr').innerHTML = '<p class="text-outline">Type to search, e.g. “garba”, “MBA”, “auditorium”.</p>'; return }
+        const hits = [...EVENTS.filter(e => (e.title + e.desc + e.venue + e.tag + (e.long || '')).toLowerCase().includes(v)).map(e => ['event', e.id, e.title, e.dt + ' · ' + e.venue]), ...PROGRAMS.filter(p => (p[0] + p[1] + p[2]).toLowerCase().includes(v)).map(p => ['prog', p[0], p[0], p[1]])];
+        $('#sr').innerHTML = hits.length ? hits.map(h => `<button data-k="${h[0]}" data-i="${esc(h[1])}" class="text-left p-3 rounded-lg bg-surface-low hover:bg-primary-fixed"><b class="block text-on-surface">${esc(h[2])}</b><span class="text-xs">${esc(h[3])}</span></button>`).join('') : '<p>No results found.</p>'
+      };
+      $('#sq').oninput = run; run(); $('#sr').onclick = e => { const b = e.target.closest('[data-k]'); if (b) b.dataset.k === 'event' ? details(b.dataset.i) : program(b.dataset.i) }
+    };
+
+    /* ======== events ======== */
+    const small = e => `<div class="card p-5 flex flex-col justify-between ${e.id === 'fresher' ? 'mt-6' : ''}"><div class="w-full h-32 rounded-lg overflow-hidden mb-4">${img(e.himg, 'w-full h-full object-cover', e.title)}</div><div><span class="text-xs font-bold uppercase ${e.id === 'agrim' ? 'text-festive-orange' : 'text-primary'}">${e.ftag}</span><h3 class="font-semibold text-on-surface">${e.id === 'agrim' ? 'Agrim Tech Fest' : e.title}</h3><p class="text-xs text-on-surface-variant mt-1">${esc(e.sub)}</p></div><div class="mt-4 pt-4 border-t flex justify-between items-center"><b class="text-primary">${e.price}</b><button data-det="${e.id}" class="text-primary text-sm font-medium hover:underline flex items-center gap-1">Details<span class="material-symbols-outlined text-sm">arrow_forward</span></button></div></div>`;
+    $('#heroCards').innerHTML = small(ev('agrim')) + small(ev('fresher'));
+    $('#stats').innerHTML = STATS.map(s => `<div class="p-4 text-center"><b data-count="${s[0]}" class="text-3xl ${s[2]} block">${s[0]}</b><span class="text-xs text-on-surface-variant">${s[1]}</span></div>`).join('');
+    function countUp(el) { const m = el.dataset.count.match(/^(\D*)(\d+)(\D*)$/); if (!m) return; const to = +m[2], t0 = performance.now(); (function f(t) { const p = Math.min((t - t0) / 1200, 1); el.textContent = m[1] + Math.round(to * p) + m[3]; if (p < 1) requestAnimationFrame(f) })(t0) }
+    new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { $$('[data-count]').forEach(countUp); o.disconnect() } }), { threshold: .4 }).observe($('#stats'));
+
+    function featCard(e) {
+      return `<article class="card overflow-hidden flex flex-col justify-between"><div class="relative h-64 overflow-hidden">${img(e.fimg, 'w-full h-full object-cover transition-transform duration-500 hover:scale-105', e.title)}<span class="absolute top-4 left-4 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold">${e.ftag}</span><span class="absolute bottom-4 right-4 ${e.id === 'agrim' ? 'bg-secondary-container text-secondary' : 'bg-festive-orange text-white'} px-4 py-2 rounded-lg font-bold shadow-md">${e.price}</span></div>
+<div class="p-6 space-y-4"><div class="flex justify-between items-start gap-3"><div><span class="text-xs text-on-surface-variant">${e.sup}</span><h3 class="text-2xl font-semibold text-primary">${e.ft || e.title}</h3></div><span class="bg-primary-fixed text-primary px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap">${e.dt}</span></div>
+<p class="text-on-surface-variant">${e.long}</p>
+<div class="grid grid-cols-3 gap-2 py-3 border-y text-center text-xs font-bold text-on-surface"><div><span class="material-symbols-outlined text-primary text-base">schedule</span><p>${e.time}</p></div><div><span class="material-symbols-outlined text-primary text-base">location_on</span><p>${e.venue}</p></div><div><span class="material-symbols-outlined text-primary text-base">group</span><p>${esc(e.host)}</p></div></div>
+<div class="flex justify-between items-center pt-1 gap-2"><div class="flex items-center gap-2"><span class="inline-block w-2 h-2 rounded-full bg-festive-orange animate-ping"></span><span class="text-xs text-on-surface-variant">${e.status}</span></div><div class="flex gap-2"><button data-det="${e.id}" class="btn btn-l">Details</button><button data-reg="${e.id}" class="btn btn-p">${joined(e.id) ? '✓ Registered' : e.cta}</button></div></div></div></article>`
+    }
+    function renderFeat() { const l = EVENTS.filter(e => e.f && (feat === 'All Events' || e.f === feat)); l.sort((a, b) => a.id === 'fresher' ? -1 : 1); $('#featGrid').innerHTML = l.map(featCard).join('') }
+    const chipHTML = (arr, cur, k) => arr.map(c => `<button class="chip" data-${k}="${esc(c)}" aria-pressed="${c === cur}">${esc(c)}</button>`).join('');
+    function renderChips() { $('#featChips').innerHTML = chipHTML(['All Events', 'Cultural', 'Technical'], feat, 'fc'); $('#chips').innerHTML = chipHTML(['All Events', 'Cultural', 'Tech & Management', 'Sports'], cat, 'c') }
+    $('#featChips').onclick = e => { const b = e.target.closest('[data-fc]'); if (b) { feat = b.dataset.fc; renderChips(); renderFeat() } };
+    $('#chips').onclick = e => { const b = e.target.closest('[data-c]'); if (b) { cat = b.dataset.c; renderChips(); renderGrid() } };
+    function renderGrid() {
+      const l = EVENTS.filter(e => (cat === 'All Events' || e.cat === cat)); $('#none').classList.toggle('hidden', l.length > 0);
+      $('#grid').innerHTML = l.map(e => `<article class="card overflow-hidden flex flex-col ${e.big ? 'sm:col-span-2' : ''}"><div class="relative ${e.big ? 'h-56' : 'h-48'} overflow-hidden">${img(e.img, 'w-full h-full object-cover transition-transform duration-500 hover:scale-105', e.title)}<span class="absolute top-3 left-3 ${e.id === 'agrim' ? 'bg-primary' : 'bg-festive-orange'} text-white px-3 py-1 rounded-full text-xs font-bold shadow">${e.tag}</span>${e.big ? `<span class="absolute bottom-3 right-3 bg-primary/80 backdrop-blur text-white px-3 py-1 rounded text-xs">${e.dt}</span>` : ''}</div>
+ <div class="p-5 flex flex-col flex-grow justify-between gap-4"><div><h3 class="text-lg font-semibold mb-2">${e.title}</h3><p class="text-sm text-on-surface-variant">${e.desc}</p></div><div class="flex items-center justify-between pt-3 border-t gap-2"><span class="text-xs text-outline flex items-center gap-1"><span class="material-symbols-outlined text-sm">location_on</span>${e.venue}</span><div class="flex gap-1.5"><button data-det="${e.id}" class="btn btn-l !px-3 !py-1.5">Details</button><button data-reg="${e.id}" class="btn ${joined(e.id) ? 'bg-green-100 text-green-800' : e.big ? 'btn-p' : 'bg-secondary text-white'} !px-3 !py-1.5">${joined(e.id) ? '✓ Joined' : e.big ? 'Register Now' : 'Join'}</button></div></div></div></article>`).join('')
+    }
+    document.addEventListener('click', e => { const d = e.target.closest('[data-det]'), r = e.target.closest('[data-reg]'), i = e.target.closest('[data-info]'); if (d) details(d.dataset.det); else if (r) register(r.dataset.reg); else if (i) openM(INFO[i.dataset.info][0], `<p>${INFO[i.dataset.info][1]}</p>`) });
+
+    function details(id) { const e = ev(id); openM(e.title, `<div class="h-44 -mx-6 -mt-5 mb-4 overflow-hidden">${img(e.img, 'w-full h-full object-cover', e.title)}</div><p class="mb-3 text-on-surface">${e.long || e.desc}</p><ul class="mb-4 flex flex-col gap-1.5"><li><b>Date:</b> ${e.dt}</li>${e.time ? `<li><b>Time:</b> ${e.time}</li>` : ''}<li><b>Venue:</b> ${e.venue}</li>${e.host ? `<li><b>Host:</b> ${esc(e.host)}</li>` : ''}${e.price ? `<li><b>Entry:</b> ${e.price}</li>` : ''}</ul><button id="dReg" class="btn btn-p w-full py-3">${joined(id) ? 'Manage registration' : 'Register now'}</button>`); $('#dReg').onclick = () => register(id) }
+    function register(id) {
+      const e = id && ev(id);
+      if (e && joined(id)) { openM('You’re registered', `<p class="mb-4">You’re signed up for <b>${e.title}</b> (${e.dt}).</p><button id="cx" class="btn w-full py-3 border border-error text-error hover:bg-red-50">Cancel registration</button>`); $('#cx').onclick = () => { regs = regs.filter(r => r.id !== id); store.set('rbims_regs', regs); closeM(); refresh(); toast('Registration cancelled') }; return }
+      const last = regs[regs.length - 1] || {}, open = EVENTS.filter(x => !joined(x.id));
+      if (!open.length) { toast('You’ve registered for every event'); return }
+      openM(e ? 'Register: ' + (e.ft || e.title) : 'Register for an event', `<form id="rf" novalidate class="flex flex-col gap-3">${e ? (e.price ? `<p class="text-sm">Entry: <b class="text-primary">${e.price}</b></p>` : '') : `<select name="ev" class="inp">${open.map(x => `<option value="${x.id}">${x.title}</option>`).join('')}</select>`}<div><input name="name" class="inp" placeholder="Full name" value="${esc(last.name || '')}"/><p class="err text-xs text-error mt-1 hidden"></p></div><div><input name="email" type="email" class="inp" placeholder="Email address" value="${esc(last.email || '')}"/><p class="err text-xs text-error mt-1 hidden"></p></div><button class="btn btn-o py-3">Confirm registration</button></form>`);
+      $('#rf').onsubmit = x => { x.preventDefault(); const f = x.target; if (!valid(f)) return; const eid = e ? e.id : f.ev.value; regs.push({ id: eid, name: f.name.value.trim(), email: f.email.value.trim() }); store.set('rbims_regs', regs); closeM(); refresh(); toast('Registered for ' + (ev(eid).ft || ev(eid).title)) }
+    }
+    $('#regBtn').onclick = () => register();
+    $('#meBtn').onclick = () => {
+      const l = regs.map(r => ev(r.id)).filter(Boolean); openM('My registrations', l.length ? `<ul class="flex flex-col gap-2">${l.map(e => `<li class="flex justify-between items-center gap-3 p-3 rounded-lg bg-surface-low"><div><b class="text-on-surface">${e.title}</b><div class="text-xs">${e.dt} · ${e.venue}</div></div><button data-x="${e.id}" class="text-xs text-error font-semibold hover:underline">Cancel</button></li>`).join('')}</ul>` : '<p>You haven’t registered for anything yet. Choose an event and tap Register.</p>');
+      $$('#mBody [data-x]').forEach(b => b.onclick = () => { regs = regs.filter(r => r.id !== b.dataset.x); store.set('rbims_regs', regs); refresh(); $('#meBtn').onclick(); toast('Registration cancelled') })
+    };
+
+    /* ======== schedule & venues ======== */
+    $('#sched').innerHTML = [...EVENTS].sort((a, b) => (a.date || '9').localeCompare(b.date || '9')).map(e => { const d = e.date && new Date(e.date + 'T00:00:00'); return `<li class="card flex items-center gap-4 p-4"><div class="w-14 shrink-0 text-center bg-primary-fixed rounded-lg py-2">${d ? `<div class="text-lg font-bold text-primary leading-none">${d.getDate()}</div><div class="text-xs text-primary">${d.toLocaleDateString('en-IN', { month: 'short' })}</div>` : '<span class="material-symbols-outlined text-primary">event</span>'}</div><div class="flex-grow min-w-0"><b class="block truncate">${e.title}</b><span class="text-xs text-on-surface-variant">${e.time ? e.time + ' · ' : ''}${e.venue}</span></div><button data-det="${e.id}" class="text-sm font-semibold text-primary hover:underline">Details</button></li>` }).join('');
+    const VEN = [...new Set(EVENTS.map(e => e.venue))];
+    $('#venueGrid').innerHTML = VEN.map(v => { const n = EVENTS.filter(e => e.venue === v).length; return `<button data-v="${esc(v)}" class="card text-left p-5"><span class="material-symbols-outlined text-festive-orange">location_on</span><b class="block mt-1">${v}</b><span class="text-xs text-on-surface-variant">${n} event${n > 1 ? 's' : ''}</span></button>` }).join('');
+    $('#venueGrid').onclick = e => { const b = e.target.closest('[data-v]'); if (!b) return; openM(b.dataset.v, `<ul class="flex flex-col gap-2">${EVENTS.filter(x => x.venue === b.dataset.v).map(x => `<li class="p-3 rounded-lg bg-surface-low"><b class="text-on-surface">${x.title}</b><div class="text-xs">${x.dt}</div></li>`).join('')}</ul><a target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=RBIMS+Ahmedabad" class="btn btn-p w-full mt-4">Open campus map</a>`) };
+
+    /* ======== about ======== */
+    $('#programs').innerHTML = PROGRAMS.map(p => `<div class="card p-6 rv"><span class="inline-block bg-primary-fixed text-primary text-xs px-3 py-1 rounded-full mb-4 font-bold">${p[1]}</span><h4 class="text-xl font-semibold text-primary mb-1">${p[0]}</h4><p class="text-sm text-on-surface-variant mb-4">${p[2]}</p><button data-p="${p[0]}" class="flex items-center gap-1 text-festive-orange text-sm font-medium hover:underline">Explore Curriculum<span class="material-symbols-outlined text-sm">arrow_forward</span></button></div>`).join('');
+    function program(n) { const p = PROGRAMS.find(x => x[0] === n); openM(p[0] + ' – ' + p[1], `<p class="mb-4 text-on-surface">${p[2]}</p><p class="mb-4">Semester-wise curriculum, fees and eligibility are shared by the admissions office.</p><a href="#contact" id="pq" class="btn btn-o w-full py-3">Ask about ${p[0]}</a>`); $('#pq').onclick = () => { closeM(); $('#cType').value = 'Academic Schedule'; $('#cMsg').value = 'I would like details about the ' + p[0] + ' curriculum.'; $('#cnt').textContent = $('#cMsg').value.length + ' / 500' } }
+    $('#programs').onclick = e => { const b = e.target.closest('[data-p]'); if (b) program(b.dataset.p) };
+    $('#faculty').innerHTML = FACULTY.map(f => `<div class="card p-6 text-center rv">${img(f[3], 'w-24 h-24 rounded-full mx-auto mb-4 object-cover', f[0])}<h4 class="text-lg font-semibold text-primary">${f[0]}</h4><p class="text-xs text-on-surface-variant mb-2">${f[1]}</p><p class="text-sm text-on-surface-variant">${f[2]}</p></div>`).join('');
+    $('#council').innerHTML = COUNCIL.map(c => `<div class="card p-4 rv">${img(c[2], 'w-20 h-20 rounded-full mx-auto mb-2 object-cover', c[0])}<h5 class="text-sm font-bold text-primary">${c[0]}</h5><p class="text-xs text-on-surface-variant">${c[1]}</p></div>`).join('');
+    $('#testi').innerHTML = TESTI.map(t => `<div class="card p-6 flex flex-col justify-between rv"><span class="material-symbols-outlined text-festive-orange text-4xl">format_quote</span><p class="text-on-surface-variant italic">“${t[0]}”</p><div class="flex items-center gap-4 mt-6"><div class="w-12 h-12 rounded-full bg-primary-fixed overflow-hidden">${img(t[3], 'w-full h-full object-cover', t[1])}</div><div><h4 class="font-semibold text-primary">${t[1]}</h4><p class="text-xs text-on-surface-variant">${t[2]}</p></div></div></div>`).join('');
+    $$('[data-ticks]').forEach(u => u.innerHTML = JSON.parse(u.dataset.ticks).map(t => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-festive-orange text-sm">check_circle</span>${t}</li>`).join(''));
+
+    /* ======== forms ======== */
+    $('#appForm').onsubmit = e => {
+      e.preventDefault(); const f = e.target; if (!valid(f)) { toast('Please fix the highlighted fields'); return }
+      const apps = store.get('rbims_apps', []); apps.push({ name: f.name.value, sid: f.sid.value, prog: f.prog.value, role: f.role.value, why: f.why.value }); store.set('rbims_apps', apps);
+ /* TODO: send to your backend here with fetch() */ f.reset(); toast('Application submitted. Good luck!')
+    };
+    $('#cMsg').oninput = e => $('#cnt').textContent = e.target.value.length + ' / 500';
+    $('#cForm').onsubmit = e => {
+      e.preventDefault(); const f = e.target; if (!valid(f)) { toast('Please fix the highlighted fields'); return }
+      const b = $('#cBtn'); b.disabled = true; b.lastElementChild.textContent = 'Sending...';
+      /* TODO: replace this timeout with a real fetch() to your backend or form service */
+      setTimeout(() => { f.reset(); $('#cnt').textContent = '0 / 500'; b.disabled = false; b.lastElementChild.textContent = 'Submit Inquiry'; toast('Message sent. We’ll reply within 24 hours.') }, 900)
+    };
+    $('#coords').innerHTML = COORDS.map(c => `<div class="flex items-center justify-between p-3 bg-surface-low rounded-lg"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full ${c[3]} text-white flex items-center justify-center font-bold">${c[0]}</div><div><h4 class="text-sm font-bold">${c[1]}</h4><p class="text-xs text-on-surface-variant">${c[2]}</p></div></div><div class="flex"><button data-cp aria-label="Copy number" class="p-2 text-primary hover:bg-primary-fixed rounded-full"><span class="material-symbols-outlined">content_copy</span></button><a href="tel:${PHONE}" aria-label="Call ${c[1]}" class="p-2 text-primary hover:bg-primary-fixed rounded-full"><span class="material-symbols-outlined">phone</span></a></div></div>`).join('');
+    $('#coords').onclick = e => { if (e.target.closest('[data-cp]')) copy(PHONE, 'Phone number copied') };
+    $('#copyAddr').onclick = () => copy('Opp. Hirawadi BRTS, Thakkarbapanagar, Ahmedabad, 382350', 'Address copied');
+
+    /* ======== init ======== */
+    function refresh() { renderFeat(); renderGrid() }
+    renderChips(); refresh();
+    const rvo = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); rvo.unobserve(x.target) } }), { threshold: .12 });
+    $$('.rv').forEach(el => rvo.observe(el));
+  </script>
+</body>
+
+</html>
